@@ -6,13 +6,6 @@ class listaUsuarios{
   agregarUsuario(user) {
     this.listUsers.push(user);
   }
-
-  eliminarUsuario(user){
-    const index = this.listUsers.indexOf(user);
-    if (index != -1) {
-      this.listUsers.splice(index,1);
-    }
-  }
 }
 
 class User {
@@ -56,13 +49,6 @@ class Trabajos {
   agregarTrabajo(trabajo){
     this.listaTrabajos.push(trabajo);
   }
-
-  eliminarTrabajo(trabajo){
-    const index = this.listaTrabajos.indexOf(trabajo);
-    if (index !== -1){
-      this.listaTrabajos.splice(index,1);
-    }
-  }
 }
 
 class Trabajo {
@@ -75,6 +61,65 @@ class Trabajo {
   get tipoContrato() {
     return this.horasTrabajo <= 20 ? "Part-time" : "Full-time";
   }
+}
+
+// ----------- FUNCIONES
+function cargarUsuariosDesdeLocalStorage() {
+  const usuariosJSON = localStorage.getItem('usuarios');
+  if (usuariosJSON) {
+    const usuariosGuardados = JSON.parse(usuariosJSON);
+    if (Array.isArray(usuariosGuardados)) {
+      usuarios.listUsers = usuariosGuardados;
+    }
+  }
+}
+
+// Almacenar usuarios en el almacenamiento local
+function guardarUsuariosEnLocalStorage(usuarios) {
+  const usuariosJSON = JSON.stringify(usuarios);
+  localStorage.setItem('usuarios', usuariosJSON);
+}
+
+// Verifica el inicio de sesión
+function loginUser(username, password) {
+  // Buscar el usuario por su nombre de usuario
+  const user = usuarios.listUsers.find(user => user.username === username);
+
+  if (user && user.password === password) {
+    return user.Persona;
+  }
+  return null;
+}
+
+// Función para mostrar los datos de la persona
+function mostrarDatosUsuario(persona) {
+  userNameElement.textContent = persona.nombre;
+  userLastnameElement.textContent = persona.apellido;
+  userDniElement.textContent = persona.dni;
+  userJobElement.textContent = persona.Trabajo.seccion;
+  userContractTypeElement.textContent = persona.Trabajo.tipoContrato;
+  userWorkHoursElement.textContent = persona.Trabajo.horasTrabajo;
+  userSalaryElement.textContent = persona.calcularSueldo();
+}
+
+
+function mostrarDatosUsuarioNuevo(newUser) {
+  registroExitoso.innerHTML = `
+    <h2><strong>Registro exitoso</strong></h2>
+    <p>Tus datos de ingreso son:</p>
+    <p>Usuario: ${newUser.username}</p>
+    <p>Contraseña: ${newUser.password}</p>
+    <button id="back-login">Iniciar Sesión</button>
+  `;
+
+  const backButton = document.getElementById("back-login");
+  backButton.addEventListener("click", () =>{
+    dataContainer.style.display = "none";
+    registroExitoso.style.display = "none";
+    loginContainer.style.display = "block";
+
+  });
+
 }
 
 // ----------- SIMULADOR
@@ -105,16 +150,6 @@ async function cargarUsuariosDesdeJSON() {
   }
 }
 
-function cargarUsuariosDesdeLocalStorage() {
-  const usuariosJSON = localStorage.getItem('usuarios');
-  if (usuariosJSON) {
-    const usuariosGuardados = JSON.parse(usuariosJSON);
-    if (Array.isArray(usuariosGuardados)) {
-      usuarios.listUsers = usuariosGuardados;
-    }
-  }
-}
-
 // Llama a esta función al inicio de tu aplicación
 cargarUsuariosDesdeLocalStorage();
 cargarUsuariosDesdeJSON();
@@ -122,12 +157,6 @@ cargarUsuariosDesdeJSON();
 console.log(usuarios.listUsers);
 
 // INICIO
-
-// Almacenar usuarios en el almacenamiento local
-function guardarUsuariosEnLocalStorage(usuarios) {
-  const usuariosJSON = JSON.stringify(usuarios);
-  localStorage.setItem('usuarios', usuariosJSON);
-}
 
 // Obtener elementos del DOM
 const loginContainer = document.getElementById("login-container");
@@ -143,28 +172,6 @@ const userJobElement = document.getElementById("user-job");
 const userContractTypeElement = document.getElementById("user-contract-type");
 const userWorkHoursElement = document.getElementById("user-work-hours");
 const userSalaryElement = document.getElementById("user-salary");
-
-// Simular una función para verificar el inicio de sesión
-function loginUser(username, password) {
-  // Buscar el usuario por su nombre de usuario
-  const user = usuarios.listUsers.find(user => user.username === username);
-
-  if (user && user.password === password) {
-    return user.Persona;
-  }
-  return null;
-}
-
-// Función para mostrar los datos de la persona
-function showUserData(persona) {
-  userNameElement.textContent = persona.nombre;
-  userLastnameElement.textContent = persona.apellido;
-  userDniElement.textContent = persona.dni;
-  userJobElement.textContent = persona.Trabajo.seccion;
-  userContractTypeElement.textContent = persona.Trabajo.tipoContrato;
-  userWorkHoursElement.textContent = persona.Trabajo.horasTrabajo;
-  userSalaryElement.textContent = persona.calcularSueldo();
-}
 
 // Función para manejar el evento de inicio de sesión
 
@@ -185,9 +192,9 @@ loginButton.addEventListener("click", () => {
       position: "right", // Posición en el centro
       backgroundColor: "green", // Color de fondo
     }).showToast();
-    showUserData(persona);
+    mostrarDatosUsuario(persona);
   } else {
-    // Si el inicio de sesión no es válido, muestra un mensaje de error (puedes personalizar este mensaje)
+    // Si el inicio de sesión no es válido, muestra un mensaje de error
     Swal.fire({
       icon: 'warning',
       title: 'Ups...',
@@ -249,7 +256,7 @@ registerButton.addEventListener("click", () => {
   registrationForm.style.display = "block";
 });
 
-// Función para manejar el evento de registro
+// maneja el evento de registro
 registrarButton.addEventListener("click", () => {
   // Obtener los valores ingresados por el usuario
   const nombre = nombreInput.value.charAt(0).toUpperCase() + nombreInput.value.slice(1).toLowerCase();
@@ -282,22 +289,3 @@ registrarButton.addEventListener("click", () => {
     alert("Por favor, complete todos los campos.");
   }
 });
-
-function mostrarDatosUsuario(newUser) {
-  registroExitoso.innerHTML = `
-    <h2><strong>Registro exitoso</strong></h2>
-    <p>Tus datos de ingreso son:</p>
-    <p>Usuario: ${newUser.username}</p>
-    <p>Contraseña: ${newUser.password}</p>
-    <button id="back-login">Iniciar Sesión</button>
-  `;
-
-  const backButton = document.getElementById("back-login");
-  backButton.addEventListener("click", () =>{
-    dataContainer.style.display = "none";
-    registroExitoso.style.display = "none";
-    loginContainer.style.display = "block";
-
-  });
-
-}
