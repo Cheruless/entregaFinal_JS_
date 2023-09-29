@@ -1,0 +1,88 @@
+[
+    {
+      "username": "epulgar",
+      "password": "password",
+      "Persona": {
+        "nombre": "Exequiel",
+        "apellido": "Pulgar",
+        "dni": 20781681,
+        "Trabajo": {
+          "seccion": "Carnicería",
+          "horasTrabajo": 20,
+          "pagoPorHora": 2700
+        }
+      }
+    },
+    {
+      "username": "cbiermoritz",
+      "password": "password",
+      "Persona": {
+        "nombre": "Constanza",
+        "apellido": "Biermoritz",
+        "dni": 20942557,
+        "Trabajo": {
+          "seccion": "Fiambrería",
+          "horasTrabajo": 20,
+          "pagoPorHora": 2700
+        }
+      }
+    },
+    {
+      "username": "jpepe",
+      "password": "password",
+      "Persona": {
+        "nombre": "José",
+        "apellido": "Pepe",
+        "dni": 20726352,
+        "Trabajo": {
+          "seccion": "Caja",
+          "horasTrabajo": 20,
+          "pagoPorHora": 2700
+        }
+      }
+    },
+    {
+      "username": "pjuan",
+      "password": "password",
+      "Persona": {
+        "nombre": "Pedro",
+        "apellido": "Juan",
+        "dni": 20645362,
+        "Trabajo": {
+          "seccion": "Carniceria",
+          "horasTrabajo": 42,
+          "pagoPorHora": 2700
+        }
+      }
+    },
+    {
+      "username": "mkent",
+      "password": "password",
+      "Persona": {
+        "nombre": "Macarena",
+        "apellido": "Kent",
+        "dni": 19546352,
+        "Trabajo": {
+          "seccion": "Fiambreria",
+          "horasTrabajo": 42,
+          "pagoPorHora": 2700
+        }
+      }
+    },
+    {
+      "username": "fjak",
+      "password": "password",
+      "Persona": {
+        "nombre": "Fresa",
+        "apellido": "Jak",
+        "dni": 19786263,
+        "Trabajo": {
+          "seccion": "Caja",
+          "horasTrabajo": 42,
+          "pagoPorHora": 2700
+        }
+      }
+    }
+]
+
+
